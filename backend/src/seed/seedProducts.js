@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import connectDB from "../db/connectDB.js";
-import { Product } from "../models/Product.model.js";
+import { Product } from "../models/product.model.js";
 
 dotenv.config();
 
