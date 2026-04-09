@@ -14,9 +14,17 @@ app.get('/', (req, res) => {
 })
 
 import productRouter from './routes/product.routes.js'
-import cartRouter from './routes/cart.routes.js'
 
 app.use("/api/v1/products", productRouter)
+
+
+import cartRouter from './routes/cart.routes.js'
+
 app.use("/api/v1/cart", cartRouter)
+
+
+import authRouter from './routes/auth.routes.js'
+
+app.use("/api/v1/auth", authRouter)
 
 export { app }
