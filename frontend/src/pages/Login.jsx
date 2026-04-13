@@ -1,6 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { loginUser } from "../api/auth";
+import { getProfile } from "../api/auth.js";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -8,18 +12,14 @@ const Login = () => {
     password: "",
   });
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await getProfile();
-        console.log(res.data);
-      } catch (err) {
-        console.error("Not authorized");
-      }
-    };
+  const navigate = useNavigate();
 
-    fetchProfile();
-  }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/profile");
+    }
+  },[]);
 
   const handleChange = (e) => {
     setForm({
@@ -34,27 +34,47 @@ const Login = () => {
     try {
       const res = await loginUser(form);
 
-      console.log(res.data);
-
       localStorage.setItem("token", res.data.data.token);
+
+      navigate("/profile");
     } catch (error) {
       console.error(error.response?.data?.message);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="email" placeholder="Email" onChange={handleChange} />
+    <div className="min-h-screen flex items-center justify-center bg-muted/40">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-background shadow-lg rounded-2xl p-8 w-full max-w-md space-y-6"
+      >
+        <h2 className="text-2xl font-semibold text-center">Login</h2>
 
-      <input
-        name="password"
-        type="password"
-        placeholder="Password"
-        onChange={handleChange}
-      />
+        <div>
+          <label className="text-sm font-medium">Email</label>
+          <Input
+            name="email"
+            type="email"
+            placeholder="Enter your Email"
+            onChange={handleChange}
+          />
+        </div>
 
-      <button type="submit">Login</button>
-    </form>
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Password</label>
+          <Input
+            name="password"
+            type="password"
+            placeholder="Password"
+            onChange={handleChange}
+          />
+        </div>
+
+        <Button type="submit" className="w-full">
+          Login
+        </Button>
+      </form>
+    </div>
   );
 };
 

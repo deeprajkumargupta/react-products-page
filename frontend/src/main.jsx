@@ -10,6 +10,9 @@ import Cart from "./pages/Cart";
 import CartProvider from "./context/CartContext";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
+import PrivateRoute from "./components/PrivateRoute";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +34,18 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "/profile",
+    element: (
+      <PrivateRoute>
+        <Profile />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
     path: "*",
     element: <NotFound />,
   },
@@ -38,8 +53,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>,
 );

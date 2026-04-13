@@ -9,6 +9,11 @@ function App() {
   // const { cart } = useContext(CartContext);
   const cart = useSelector((state) => state.cart.cartItems);
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const token = localStorage.getItem("token");
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login"; // quick redirect
+  };
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b sticky top-0 bg-background z-50">
@@ -28,6 +33,21 @@ function App() {
                 )}
               </Button>
             </Link>
+            {token ? (
+              <>
+                <Link to="/profile">
+                  <Button variant="secondary">Profile</Button>
+                </Link>
+
+                <Button variant="destructive" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Link to="/login">
+                <Button>Login</Button>
+              </Link>
+            )}
           </nav>
         </div>
       </header>

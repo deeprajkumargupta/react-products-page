@@ -47,28 +47,28 @@ const registerUser = asyncHandler(async (req, res) => {
 })
 
 const loginUser = asyncHandler(async (req, res) => {
-    const {username, email,  password}= req.body;
+    const { username, email, password } = req.body;
 
-    if(!username && !email){
+    if (!username && !email) {
         throw new ApiError(400, "Email and password are required");
     }
 
-    if(!password){
+    if (!password) {
         throw new ApiError(400, "Password is required");
     }
 
-    const user= await User.findOne({ $or: [{username}, {email}] })
-    if(!user){
+    const user = await User.findOne({ $or: [{ username }, { email }] })
+    if (!user) {
         throw new ApiError(404, "User does not exist")
     }
 
     const isPasswordValid = await user.comparePassword(password);
 
-    if(!isPasswordValid){
+    if (!isPasswordValid) {
         throw new ApiError(401, "Invalid credentials");
     }
 
-    const token= jwt.sign(
+    const token = jwt.sign(
         {
             id: user._id,
             email: user.email
