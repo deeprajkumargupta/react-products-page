@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
+import { Toaster } from "./components/ui/sonner";
 
 const router = createBrowserRouter([
   {
@@ -54,7 +55,10 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <>
+        <RouterProvider router={router} />
+        <Toaster richColors position="top-right" />
+      </>
     </Provider>
   </StrictMode>,
 );

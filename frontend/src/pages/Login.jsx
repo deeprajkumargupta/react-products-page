@@ -1,12 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { loginUser } from "../api/auth";
-import { getProfile } from "../api/auth.js";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -19,7 +21,7 @@ const Login = () => {
     if (token) {
       navigate("/profile");
     }
-  },[]);
+  }, []);
 
   const handleChange = (e) => {
     setForm({
@@ -30,15 +32,32 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    const toastId = toast.loading("Logging in...", {
+      description: "Please wait while we verify your credentials",
+      position: "top-right",
+    });
 
     try {
       const res = await loginUser(form);
 
       localStorage.setItem("token", res.data.data.token);
 
+      toast.success("Login successful", {
+        description: "Welcome back 👋",
+        id: toastId,
+      });
+
       navigate("/profile");
     } catch (error) {
-      console.error(error.response?.data?.message);
+      toast.error("Login failed", {
+        description: error.response?.data?.message || "Invalid credentials",
+        id: toastId,
+      });
+      // setError(error.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,7 +90,7 @@ const Login = () => {
         </div>
 
         <Button type="submit" className="w-full">
-          Login
+          {loading ? "Logging in..." : "Login"}
         </Button>
       </form>
     </div>

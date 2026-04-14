@@ -6,7 +6,7 @@ const router = Router();
 
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
-router.route("/profile").get(verifyJWT, (req,res)=>{
+router.route("/profile").get(verifyJWT, (req, res) => {
     res.status(200).json({
         message: "User profile fetched successfully",
         user: req.user

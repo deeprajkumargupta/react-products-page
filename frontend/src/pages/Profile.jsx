@@ -14,7 +14,9 @@ const Profile = () => {
         setUser(res.data.data.user);
       } catch (err) {
         setError(error.response?.data?.message || "Login failed");
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {
+          error && <p className="text-red-500 text-sm">{error}</p>;
+        }
       }
     };
 
