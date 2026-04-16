@@ -1,39 +1,32 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import { getProfile } from "../api/auth.js";
+import { useAuth } from "../context/AuthContext";
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
+  const {user, loading}= useAuth();
 
-  const [error, setError] = useState("");
+  if(loading){
+    return <p className="text-center mt-10">Loading...</p>
+  }
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await getProfile();
-        setUser(res.data.data.user);
-      } catch (err) {
-        setError(error.response?.data?.message || "Login failed");
-        {
-          error && <p className="text-red-500 text-sm">{error}</p>;
-        }
-      }
-    };
-
-    fetchProfile();
-  }, []);
+  if(!user){
+    return <p className="text-center mt-10 text-red-500">Not authorized</p>
+  }
 
   return (
-    <div>
-      <h2>Profile</h2>
-      {user ? (
-        <>
-          <h2>{user.username}</h2>
-          <p>{user.email}</p>
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="bg-background shadow-lg rounded-2xl p-8 w-full max-w-md space-y-4">
+        <h2 className="text-2xl font-semibold text-center">Profile</h2>
+
+        <div className="space-y-2">
+          <p className="text-sm text-muted-foreground">Username</p>
+          <p className="font-medium text-lg">{user.username}</p>
+        </div>
+
+        <div className="space-y-2">
+          <p className="text-sm text-muted-foreground">Email</p>
+          <p className="font-medium text-lg">{user.email}</p>
+        </div>
+      </div>
     </div>
   );
 };

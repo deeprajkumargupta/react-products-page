@@ -16,7 +16,7 @@ API.interceptors.request.use((config) => {
     }
 
     return config;
-});   //This runs before every request
+});   //This runs before every request, Axios interceptor attaches the token to requests
 
 export const getProfile = () => API.get("/profile");
 

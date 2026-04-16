@@ -119,7 +119,7 @@ const getCart = asyncHandler(async (req, res) => {
         {
             $group: {
                 _id: "$_id",
-                user: {$first: "$user"},
+                user: { $first: "$user" },
                 items: {
                     $push: {
                         product: "$productDetails",

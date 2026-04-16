@@ -70,14 +70,14 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const token = jwt.sign(
         {
-            id: user._id,
+            id: user._id.toString(),
             email: user.email
         },
         process.env.JWT_SECRET,
         {
             expiresIn: process.env.JWT_EXPIRES_IN
         }
-    )
+    ) //creates a signed login token
 
     return res.status(200).json(
         new ApiResponse(200, {

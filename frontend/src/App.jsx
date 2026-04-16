@@ -4,16 +4,16 @@ import { useContext } from "react";
 // import { CartContext } from "./context/CartContext";
 import { Button } from "./components/ui/button";
 import { useSelector } from "react-redux";
+import { useAuth } from "./context/AuthContext";
+
 
 function App() {
   // const { cart } = useContext(CartContext);
   const cart = useSelector((state) => state.cart.cartItems);
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const token = localStorage.getItem("token");
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login"; // quick redirect
-  };
+
+  const {user, logout} = useAuth();
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b sticky top-0 bg-background z-50">
@@ -33,13 +33,15 @@ function App() {
                 )}
               </Button>
             </Link>
-            {token ? (
+            {user ? (
               <>
+                <span className="text-sm">Hi, {user.username}</span>
+
                 <Link to="/profile">
                   <Button variant="secondary">Profile</Button>
                 </Link>
 
-                <Button variant="destructive" onClick={handleLogout}>
+                <Button variant="destructive" onClick={logout}>
                   Logout
                 </Button>
               </>

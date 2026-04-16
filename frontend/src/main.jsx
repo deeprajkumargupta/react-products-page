@@ -14,6 +14,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import { Toaster } from "./components/ui/sonner";
+import { AuthProvider } from "./context/AuthContext";
 
 const router = createBrowserRouter([
   {
@@ -55,10 +56,10 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <>
+      <AuthProvider>
         <RouterProvider router={router} />
         <Toaster richColors position="top-right" />
-      </>
+      </AuthProvider>
     </Provider>
   </StrictMode>,
 );

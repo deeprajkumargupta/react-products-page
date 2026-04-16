@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -16,12 +17,12 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/profile");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     navigate("/profile");
+  //   }
+  // }, []);
 
   const handleChange = (e) => {
     setForm({
@@ -42,7 +43,8 @@ const Login = () => {
     try {
       const res = await loginUser(form);
 
-      localStorage.setItem("token", res.data.data.token);
+      const {login}= useAuth();
+      loginUser(res.data.data.token);
 
       toast.success("Login successful", {
         description: "Welcome back 👋",
