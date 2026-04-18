@@ -7,11 +7,20 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  
   const fetchUser = async () => {
+    const token = localStorage.getItem("token");
+  
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await getProfile();
       setUser(res.data.data.user);
     } catch (err) {
+      setUser(null);
       localStorage.removeItem("token");
     } finally {
       setLoading(false);
@@ -22,9 +31,9 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  const login = (token) => {
+  const login = async (token) => {
     localStorage.setItem("token", token);
-    fetchUser();
+    await fetchUser();
   };
 
   const logout = () => {
@@ -37,6 +46,6 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export const useAuth= () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext);

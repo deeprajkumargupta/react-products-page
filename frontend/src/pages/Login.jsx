@@ -16,6 +16,7 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
@@ -43,8 +44,8 @@ const Login = () => {
     try {
       const res = await loginUser(form);
 
-      const {login}= useAuth();
-      loginUser(res.data.data.token);
+      await login(res.data.data.token);
+      navigate("/profile");
 
       toast.success("Login successful", {
         description: "Welcome back 👋",
